@@ -1,6 +1,7 @@
 fx_version 'cerulean'
 author 'Scorpion'
 description 'Cruise Control script, uses ox_lib notifications.'
+version '1.0.0'
 game 'gta5'
 
 
