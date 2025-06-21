@@ -1,4 +1,4 @@
-local v="1.0.0"
+local v="1.0.2"
 local r="Scorpion7162/s-cruisecontrol"
 local u="https://github.com/Scorpion7162/s-cruisecontrol"
 if cfg.checkforupdates then
