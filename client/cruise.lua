@@ -102,43 +102,49 @@ RegisterCommand('speeddown',function()
    end
 end,false)
 CreateThread(function()
-   while true do
-       if cruiseState.active then
-           local playerPed=PlayerPedId()
-          
-           if not IsPedInAnyVehicle(playerPed,false) then
-               disableCruise('Exited vehicle')
-           else
-               local currentVehicle=GetVehiclePedIsIn(playerPed,false)
-              
-               if currentVehicle~=cruiseState.vehicle then disableCruise('Vehicle changed')
-               elseif IsControlPressed(0,72) then disableCruise('Brakes applied')
-               else
-                   local currentSpeed=GetEntitySpeed(currentVehicle)
-                  
-                   if cruiseState.controlMode=='cruise' then
-                       if convertSpeed(cruiseState.targetSpeed)-convertSpeed(currentSpeed)>speedDropThreshold then
-                           disableCruise('Speed dropped too low')
-                       else
-                           if currentSpeed<cruiseState.targetSpeed-0.5 then
-                               SetVehicleCheatPowerIncrease(currentVehicle,1.0+(cruiseState.targetSpeed-currentSpeed)*0.1)
-                               SetControlNormal(0,71,0.6)
-                           elseif currentSpeed>cruiseState.targetSpeed+0.8 then
-                               SetControlNormal(0,72,0.3)
-                           else
-                               SetControlNormal(0,71,0.2)
-                           end
-                       end
-                   elseif cruiseState.controlMode=='speedLimiter' then
-                       if currentSpeed>cruiseState.targetSpeed then
-                           SetControlNormal(0,72,0.5)
-                       end
-                   end
-               end
-           end
-           Wait(0)
-       else
-           Wait(500)
-       end
-   end
-end)
+    while true do
+        if cruiseState.active then
+            local playerPed=PlayerPedId()
+           
+            if not IsPedInAnyVehicle(playerPed,false) then
+                disableCruise('Exited vehicle')
+            else
+                local currentVehicle=GetVehiclePedIsIn(playerPed,false)
+               
+                if currentVehicle~=cruiseState.vehicle then disableCruise('Vehicle changed')
+                elseif IsControlPressed(0,72) then disableCruise('Brakes applied')
+                else
+                    local currentSpeed=GetEntitySpeed(currentVehicle)
+                   
+                    if cruiseState.controlMode=='cruise' then
+                        if convertSpeed(cruiseState.targetSpeed)-convertSpeed(currentSpeed)>speedDropThreshold then
+                            disableCruise('Speed dropped too low')
+                        else
+                            if currentSpeed<cruiseState.targetSpeed-0.5 then
+                                SetVehicleCheatPowerIncrease(currentVehicle,1.0+(cruiseState.targetSpeed-currentSpeed)*0.1)
+                                SetControlNormal(0,71,0.6)
+                            elseif currentSpeed>cruiseState.targetSpeed+0.8 then
+                                SetControlNormal(0,72,0.3)
+                            else
+                                SetControlNormal(0,71,0.2)
+                            end
+                        end
+                    elseif cruiseState.controlMode=='speedLimiter' then
+                        if currentSpeed > cruiseState.targetSpeed + 0.2 then
+                            -- Apply brakes and cut throttle when exceeding limit
+                            SetControlNormal(0, 72, 0.7)  -- Apply brakes
+                            SetControlNormal(0, 71, 0.0)  -- Cut throttle completely
+                        elseif currentSpeed > cruiseState.targetSpeed then
+                            -- Gentle speed reduction when slightly over limit
+                            SetControlNormal(0, 71, 0.1)  -- Reduce throttle significantly
+                        end
+                        -- When under the limit, let player control normally (no intervention)
+                    end
+                end
+            end
+            Wait(0)
+        else
+            Wait(500)
+        end
+    end
+ end)
