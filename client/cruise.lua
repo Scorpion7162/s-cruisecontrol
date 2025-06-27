@@ -1,3 +1,9 @@
+-- This resource is protected under the GNU General Public License v3.0.
+-- You may not redistribute this code without providing clear attribution to the original author (Scorpion).
+-- https://choosealicense.com/licenses/gpl-3.0/
+--  Copyright © 2025 Scorpion <https://github.com/scorpion7162> 
+
+
 local cruiseState={active=false,targetSpeed=0,vehicle=nil,controlMode='cruise',speedIncrement=5}
 local usesMph= cfg.usesMph
 local minimumSpeed= cfg.minspeed
@@ -148,3 +154,7 @@ CreateThread(function()
         end
     end
  end)
+-- This resource is protected under the GNU General Public License v3.0.
+-- You may not redistribute this code without providing clear attribution to the original author (Scorpion).
+-- https://choosealicense.com/licenses/gpl-3.0/
+--  Copyright © 2025 Scorpion <https://github.com/scorpion7162> 
